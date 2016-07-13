@@ -1,0 +1,68 @@
+---
+title: "ggplot intro"
+author: "Emma"
+date: "13 July 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##plan
+
+We'll load libraries and learn ggplot2
+
+Here we write in markdown.
+
+# means header
+```{r first bit of r}
+#here we write R. hashtags mean comment.
+#loading my libraries
+
+library(dplyr)
+library(gapminder)
+library(ggplot2) #install.packages("ggplot2")
+
+##subset our data
+g<-gapminder %>%
+  filter(year ==2007)%>%
+  mutate(pop_m = pop/1e6)
+```
+
+#Let's make our first plot
+```{r}
+##ggplot (data, aesthetics (what's x, what's y)) + what_kind_of_plot ()
+s <-ggplot(g, aes(x = gdpPercap, y = lifeExp)) + geom_point()
+s
+```
+
+Piped
+```{r}
+##ggplot (data, aesthetics (what's x, what's y)) + what_kind_of_plot ()
+s <-ggplot(g, aes(x = gdpPercap, y = lifeExp)) + geom_point() +
+  aes(size = pop_m) +
+  aes(color = continent) +
+  ggtitle ('Health and Wealth of Nations for 2007') +
+  xlab('GDP per capita (USD/year)') +
+  ylab('Life Expectancy (years)') +
+  scale_colour_discrete('Continent') +
+  scale_size_continuous('Population (M)')
+s
+```
+
+
+## Boxplot
+This is a boxplot of continent and life expectancy
+Using 'g', which is a subset of 2007
+
+``` {r}
+b<-ggplot(g, aes(x = continent, y = lifeExp)) + geom_boxplot() +
+  aes(fill=continent)+
+  theme(legend.position = 'none')+
+  ggtitle ('Life Expectancy by Continent in 2007')+
+  xlab('Continent') +
+  ylab('Life Expectancy (years)')
+b
+
+```
